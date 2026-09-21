@@ -77,7 +77,7 @@ void opcontrol(void);
  */
 //#include <iostream>
 #include "lib/api.hpp"
-
+#include "globals.hpp"
 
 #endif
 

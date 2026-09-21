@@ -54,6 +54,11 @@ void autonomous() {}
  */
 void opcontrol() {
 	while (true) {
-		pros::delay(20);
+		leftX = controller.get_analog(ANALOG_LEFT_X);
+		leftY = controller.get_analog(ANALOG_LEFT_Y);
+		rightX = controller.get_analog(ANALOG_RIGHT_X);
+
+		chassis.fieldCentricDrive(leftX, leftY, rightX)
+		pros::delay(20);                               // Run for 20 ms then update
 	}
 }
