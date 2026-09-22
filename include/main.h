@@ -78,6 +78,7 @@ void opcontrol(void);
 //#include <iostream>
 #include "lib/api.hpp"
 #include "globals.hpp"
+#include "subsystems/intake.cpp"
 
 #endif
 

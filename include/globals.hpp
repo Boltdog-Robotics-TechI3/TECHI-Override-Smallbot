@@ -13,6 +13,10 @@ inline pros::MotorGroup frontRightDrive({11, -14});
 inline pros::MotorGroup backLeftDrive({18, -20});
 inline pros::MotorGroup backRightDrive({17, -16});
 
+// Intake
+inline pros::Motor intake(5);
+inline pros::adi::Pneumatics intakeLift('A', false);
+
 inline XDrivetrain drivetrain(&frontLeftDrive, &frontRightDrive, &backLeftDrive, &backRightDrive, wheelDiameter, trackWidth, gearRatio);
 
 inline pros::IMU imu(8);

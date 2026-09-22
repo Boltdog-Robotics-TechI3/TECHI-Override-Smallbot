@@ -53,12 +53,18 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	int leftX;
+	int leftY;
+	int rightX;
 	while (true) {
 		leftX = controller.get_analog(ANALOG_LEFT_X);
 		leftY = controller.get_analog(ANALOG_LEFT_Y);
 		rightX = controller.get_analog(ANALOG_RIGHT_X);
 
-		chassis.fieldCentricDrive(leftX, leftY, rightX)
+		chassis.fieldCentricDrive(leftX, leftY, rightX);
+
+		intakePeriodic();
+		
 		pros::delay(20);                               // Run for 20 ms then update
 	}
 }
