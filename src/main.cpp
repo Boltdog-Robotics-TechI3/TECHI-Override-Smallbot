@@ -64,7 +64,8 @@ void opcontrol() {
 		chassis.fieldCentricDrive(leftX, leftY, rightX);
 
 		intakePeriodic();
-		
+		elevatorPeriodic();
+
 		pros::delay(20);                               // Run for 20 ms then update
 	}
 }

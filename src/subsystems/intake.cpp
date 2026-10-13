@@ -1,6 +1,8 @@
 //chat ;-;
 #include "main.h"
 
+
+
 void intakeInit() {
     intake.set_brake_mode(MOTOR_BRAKE_COAST);
 }
