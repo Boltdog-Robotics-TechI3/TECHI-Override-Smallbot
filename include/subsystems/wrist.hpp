@@ -1,14 +1,14 @@
 #pragma once
 #include "main.h"
 
-enum wristStates {
+enum WristState {
     IDLE,
     HANDOFF,
     STOWED,
     BACKINTAKE,
     FLIPPING,
     SCORING
-}
+};
 
 void wristInit();
 

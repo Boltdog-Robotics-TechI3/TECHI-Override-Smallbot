@@ -1,7 +1,7 @@
 #pragma once
 //#include "main.h"
 
-enum elevatorState{
+enum ElevatorState{
     IDLE,
     SCORING,
     HANDOFF,
@@ -12,6 +12,6 @@ void elevatorInit();
 
 void elevatorPeriodic();
 
-void setElevatorState();
+void setElevatorState(ElevatorState state);
 
-elevatorState getElevatorState();
+ElevatorState getElevatorState();

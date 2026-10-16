@@ -80,6 +80,7 @@ void opcontrol(void);
 #include "globals.hpp"
 #include "subsystems/intake.hpp"
 #include "subsystems/elevator.hpp"
+#include "subsystems/wrist.hpp"
 #endif
 
 #endif  // _PROS_MAIN_H_

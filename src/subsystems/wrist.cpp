@@ -1,5 +1,8 @@
 #include "main.h"
-#include <wrist.hpp>
 
-wirstState state = WristState::IDLE;
+WristState state = WristState::IDLE;
 
+// pros::Task leverTask = pros::Task([]() {
+pros::Task wristStateMachine = pros::Task([]() {
+
+});
