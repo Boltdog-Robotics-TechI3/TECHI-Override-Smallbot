@@ -38,10 +38,7 @@ pros::Task elevatorStateMachine = pros::Task([]() {
 });
 
 //Move elevaotor to bottom height
-void elevatorInit()
-{
-    targetHeight = elevatorBottomHeight;
-}
+void elevatorInit() { targetHeight = elevatorBottomHeight; }
 
 void elevatorPeriodic()
 {
@@ -64,7 +61,4 @@ void setElevatorState(ElevatorState state)
     elevatorState = state;
 }
 
-ElevatorState getElevatorState()
-{
-    return elevatorState;
-}
+ElevatorState getElevatorState() { return elevatorState; }
