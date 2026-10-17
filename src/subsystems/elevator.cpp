@@ -27,7 +27,9 @@ pros::Task elevatorStateMachine = pros::Task([]() {
                 break;
             case MANUAL:
                 //Override height
-                //Do something                                          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                //Use analogue to move elevator?                        <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                targetHeight += 1 * controller.get_analog(ANALOG_LEFT_Y);
+                std::clamp(targetHeight, elevatorBottomHeight, (double)10000000); //Replace 10000000 with max height
                 break;
         }
 
