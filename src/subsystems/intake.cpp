@@ -1,7 +1,40 @@
 //chat ;-;
 #include "main.h"
 
+IntakeState intakeState = IntakeState::IDLE;
 
+pros::Task intakeStateMachine = pros::Task([]() {
+    while(1) {
+        switch (intakeState) {
+            case IDLE:
+                intake.move(0);
+                if (intakeLift.is_extended()) {
+                    intakeLift.retract();
+                }
+                break;
+            case INTAKELOW:
+                intake.move(100);
+                if (intakeLift.is_extended()) {
+                    intakeLift.retract();
+                }
+                break;
+            case INTAKEHIGH:
+                intake.move(100);
+                if (!intakeLift.is_extended()) {
+                    intakeLift.extend();
+                }
+                break;
+            case OUTTAKE:
+                intake.move(-100);
+                if (intakeLift.is_extended()) {
+                    intakeLift.retract();
+                }
+                break;
+        }
+
+        pros::delay(20);
+    }
+});
 
 void intakeInit() {
     intake.set_brake_mode(MOTOR_BRAKE_COAST);

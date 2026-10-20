@@ -2,7 +2,6 @@
 #include <format>
 #include "util/pose.hpp"
 
-
 /**
  * @brief Sets the pose using another Pose object.
  * @param newPose The new pose to set.
