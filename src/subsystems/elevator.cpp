@@ -4,18 +4,19 @@
 ElevatorState elevatorState = ElevatorState::IDLE;
 
 //Expressed in motor encoder units
-double const elevatorBottomHeight = 0, elevatorHandoffHeight = 0;
+double const elevatorBottomHeight = 0, elevatorHandoffHeight = 0, elevatorTopHeight = 10000000; //Update        <<<<<<<<<<<<<<
 double scoringElevatorHeight, targetHeight;
+
+PIDController elevatorPID(0.0, 0.0, 0.0); //Update PID values               <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 pros::Task elevatorStateMachine = pros::Task([]() {
     while(1){
         //Set targetHeight here. Write only
-        //Also have logic for state transitions?                        <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         switch (elevatorState)
         {
             case IDLE:
                 //Go to bottom and hold
-                targetHeight = 0;
+                targetHeight = elevatorBottomHeight;
                 break;
             case SCORING:
                 //Go to score height and hold
@@ -27,9 +28,8 @@ pros::Task elevatorStateMachine = pros::Task([]() {
                 break;
             case MANUAL:
                 //Override height
-                //Use analogue to move elevator?                        <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 targetHeight += 1 * controller.get_analog(ANALOG_LEFT_Y);
-                std::clamp(targetHeight, elevatorBottomHeight, (double)10000000); //Replace 10000000 with max height
+                std::clamp(targetHeight, elevatorBottomHeight, elevatorTopHeight);
                 break;
         }
 
@@ -37,8 +37,8 @@ pros::Task elevatorStateMachine = pros::Task([]() {
     }
 });
 
-//Move elevaotor to bottom height
-void elevatorInit() { targetHeight = elevatorBottomHeight; }
+//Start elevaotor at bottom height
+void elevatorInit() { elevatorState = ElevatorState::IDLE; }
 
 void elevatorPeriodic()
 {
@@ -47,18 +47,11 @@ void elevatorPeriodic()
     if (controller.get_digital(DIGITAL_DOWN)) scoringElevatorHeight -= 1;
     
     //targetHeight read only
+    //Does this comparison have an error range?                     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     double position = elevator_mg.get_position();
-    //Does this comparison have an error value?                     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    if (position != targetHeight)
-    {
-        //Move with PID                                             <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    }
+    if (position != targetHeight) { elevator_mg.move_velocity(elevatorPID.calculate(position, targetHeight)); }
 }
 
-void setElevatorState(ElevatorState state)
-{
-    //Validate state check, then                                    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    elevatorState = state;
-}
+void setElevatorState(ElevatorState state) { elevatorState = state; }
 
 ElevatorState getElevatorState() { return elevatorState; }
