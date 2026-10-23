@@ -42,7 +42,7 @@ void elevatorInit() { elevatorState = ElevatorState::IDLE; }
 
 void elevatorPeriodic()
 {
-    //Remember to update offset values later
+    //Remember to update offset values later                 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     if (controller.get_digital(DIGITAL_UP)) scoringElevatorHeight += 1;
     if (controller.get_digital(DIGITAL_DOWN)) scoringElevatorHeight -= 1;
     
