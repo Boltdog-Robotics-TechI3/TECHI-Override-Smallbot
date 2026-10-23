@@ -7,7 +7,7 @@ ElevatorState elevatorState = ElevatorState::IDLE;
 double const elevatorBottomHeight = 0, elevatorHandoffHeight = 0, elevatorTopHeight = 10000000; //Update        <<<<<<<<<<<<<<
 double scoringElevatorHeight, targetHeight;
 
-PIDController elevatorPID(0.0, 0.0, 0.0); //Update PID values               <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+PIDController elevatorPID(1, 1, 1); //Update PID values               <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 pros::Task elevatorStateMachine = pros::Task([]() {
     while(1){
@@ -28,7 +28,7 @@ pros::Task elevatorStateMachine = pros::Task([]() {
                 break;
             case MANUAL:
                 //Override height
-                targetHeight += 1 * controller.get_analog(ANALOG_LEFT_Y);
+                targetHeight += 1 * controller.get_analog(ANALOG_LEFT_Y); //Tune      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 std::clamp(targetHeight, elevatorBottomHeight, elevatorTopHeight);
                 break;
         }
