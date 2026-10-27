@@ -13,3 +13,7 @@ enum WristState {
 void wristInit();
 
 void wristPeriodic();
+
+void setWristState(WristState state);
+
+WristState getWristState();
