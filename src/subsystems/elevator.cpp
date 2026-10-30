@@ -1,7 +1,6 @@
 #include "main.h"
-#include "elevator.hpp"
 
-ElevatorState elevatorState = ElevatorState::IDLE;
+ElevatorState elevatorState = ElevatorState::EL_IDLE;
 
 //Expressed in motor encoder units
 double const elevatorBottomHeight = 0, elevatorHandoffHeight = 0, elevatorTopHeight = 10000000; //Update        <<<<<<<<<<<<<<
@@ -14,15 +13,15 @@ pros::Task elevatorStateMachine = pros::Task([]() {
         //Set targetHeight here. Write only
         switch (elevatorState)
         {
-            case IDLE:
+            case WR_IDLE:
                 //Go to bottom and hold
                 targetHeight = elevatorBottomHeight;
                 break;
-            case SCORING:
+            case WR_SCORING:
                 //Go to score height and hold
                 targetHeight = scoringElevatorHeight;
                 break;
-            case HANDOFF:
+            case WR_HANDOFF:
                 //Go to handoff height and hold
                 targetHeight = elevatorHandoffHeight;
                 break;
@@ -38,7 +37,7 @@ pros::Task elevatorStateMachine = pros::Task([]() {
 });
 
 //Start elevaotor at bottom height
-void elevatorInit() { elevatorState = ElevatorState::IDLE; }
+void elevatorInit() { elevatorState = ElevatorState::EL_IDLE; }
 
 void elevatorPeriodic()
 {

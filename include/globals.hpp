@@ -32,4 +32,5 @@ inline pros::adi::Pneumatics intakeLift('A', false);
 inline pros::MotorGroup elevator_mg({6, 7});
 
 // Wrist
-inline pros::Motor wrist(9);
+inline pros::Motor wristLeft(9);
+inline pros::Motor wristRight(10);

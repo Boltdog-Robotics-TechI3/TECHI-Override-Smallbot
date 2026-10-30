@@ -65,6 +65,7 @@ void opcontrol() {
 
 		intakePeriodic();
 		elevatorPeriodic();
+		wristPeriodic();
 
 		pros::delay(20);                               // Run for 20 ms then update
 	}

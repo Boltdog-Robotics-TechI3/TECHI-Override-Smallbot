@@ -2,7 +2,7 @@
 #include "main.h"
 
 enum IntakeState {
-  IDLE,
+  IN_IDLE,
   INTAKELOW,
   INTAKEHIGH,
   OUTTAKE,

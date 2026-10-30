@@ -1,12 +1,12 @@
 //chat ;-;
 #include "main.h"
 
-IntakeState intakeState = IntakeState::IDLE;
+IntakeState intakeState = IntakeState::IN_IDLE;
 
 pros::Task intakeStateMachine = pros::Task([]() {
     while(1) {
         switch (intakeState) {
-            case IDLE:
+            case IN_IDLE:
                 intake.move(0);
                 if (intakeLift.is_extended()) {
                     intakeLift.retract();

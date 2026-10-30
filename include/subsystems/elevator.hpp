@@ -1,10 +1,10 @@
 #pragma once
-//#include "main.h"
+#include "main.h"
 
 enum ElevatorState{
-    IDLE,
-    SCORING,
-    HANDOFF,
+    EL_IDLE,
+    EL_SCORING,
+    EL_HANDOFF,
     MANUAL
 };
 
