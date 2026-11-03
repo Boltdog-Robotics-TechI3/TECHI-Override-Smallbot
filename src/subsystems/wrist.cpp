@@ -7,7 +7,7 @@ double const wristIdle = 270, wristStowed = 270, wristIntake = 225, wristHandoff
 double wristRoll = 0, wristPitch = 0, leftSetpoint = 0, rightSetpoint = 0; // Defaults for when the robot is initialized
 
 
-PIDController wristPID(1, 1, 1); // Update PID values
+PIDController wristPID(0.5, 0, 0); // Update PID values
 
 // pros::Task leverTask = pros::Task([]() {
 pros::Task wristStateMachine = pros::Task([]() {
@@ -36,7 +36,8 @@ pros::Task wristStateMachine = pros::Task([]() {
                 break;
             case STOWED:
                 //Idle, but claw is holding piece. need to determine orientation of piece when design is finalized.
-                //Find pitch and roll
+                //Find pitch and roll                           <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                setPitch(wristStowed);
                 break;
             case BACKINTAKE:
                 //Angle at roughly downward 45 degree angle. if grab piece, go to stowed, else go to idle
@@ -78,9 +79,21 @@ pros::Task wristStateMachine = pros::Task([]() {
 void wristInit() { wristState = WristState::WR_IDLE; }
 
 void wristPeriodic() {
-    if(controller.get_digital_new_press(DIGITAL_A)){
+    if(controller.get_digital_new_press(DIGITAL_R1)){
         setPitch(180);
     }
+    if(controller.get_digital_new_press(DIGITAL_R2)){
+        setPitch(90);
+    }
+    if(controller.get_digital_new_press(DIGITAL_L1)){
+        setRoll(90);
+    }
+
+    if(controller.get_digital_new_press(DIGITAL_L2)){
+        setRoll(-90);
+    }
+
+    
     //Claw state dependent on robot state, so no player input
 
     //Do movement
@@ -104,12 +117,16 @@ WristState getWristState() { return wristState; }
 
 //0 degree angle is towards robot
 void setPitch(double pitch) {
-    leftSetpoint = (pitch + (wristRoll / 2.0)) / gearRatio;
-    rightSetpoint = (pitch - (wristRoll / 2.0)) / gearRatio;
+    wristPitch = pitch;
+
+    leftSetpoint = (pitch + (wristRoll / 2.0)) / wristGearRatio;
+    rightSetpoint = (pitch - (wristRoll / 2.0)) / wristGearRatio;
 
 }
 
 void setRoll(double roll) {
-    leftSetpoint = (wristPitch + (roll / 2.0)) / gearRatio;
-    rightSetpoint = (wristPitch - (roll / 2.0)) / gearRatio;
+    wristRoll = roll;
+
+    leftSetpoint = (wristPitch + (roll / 2.0)) / wristGearRatio;
+    rightSetpoint = (wristPitch - (roll / 2.0)) / wristGearRatio;
 }

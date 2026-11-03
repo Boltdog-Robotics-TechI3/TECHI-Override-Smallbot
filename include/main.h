@@ -81,6 +81,7 @@ void opcontrol(void);
 #include "subsystems/intake.hpp"
 #include "subsystems/elevator.hpp"
 #include "subsystems/wrist.hpp"
+#include "screen.h"
 #endif
 
 #endif  // _PROS_MAIN_H_
