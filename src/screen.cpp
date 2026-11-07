@@ -4,6 +4,8 @@ lv_obj_t* textBox1; // Text box for Button 1
 lv_obj_t* textBox2; // Text box for Button 2
 lv_obj_t* textBox3; // Text box for Button 3
 
+bool centerPressed, leftPressed;
+
 void initializeScreen() {
     // Get the screen's width and height
     lv_coord_t screenWidth = lv_obj_get_width(lv_screen_active());
@@ -107,9 +109,8 @@ void styleTextBox(lv_obj_t* textBox, lv_color_t bgColor) {
  *	Default is Match
  */
 void onCenterButton() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
+	centerPressed = !centerPressed;
+	if (centerPressed) {
 		updateTextBox(textBox2, "Skills Run Selected");
 		// skills = true;
 		// match = false;
@@ -131,12 +132,8 @@ void onCenterButton() {
  */
 void onRightButton() {
 	
-	autoSelection++;
+    autoSelection = ++autoSelection % 7;
 
-	if (autoSelection >= 7) {
-		autoSelection = 0;
-	}
-	
 	switch (autoSelection) {
 		case 0: 
 			// Auto where we rush for the plus side goal, grab it, 
@@ -146,7 +143,7 @@ void onRightButton() {
 		case 1: 
 			// Auto where we rush for the plus side goal, grab it, 
 			// then drop it off and go for the alliance side goal instead.
-			updateTextBox(textBox3, "0 - ");
+			updateTextBox(textBox3, "1 - ");
 			break;
 		case 2: 
 			updateTextBox(textBox3, "2 - ");
@@ -171,10 +168,9 @@ void onRightButton() {
  * Selects which alliance we are on. Defaults to blue
  */
 void onLeftButton() {
-	static bool pressed = false;
-	pressed = !pressed;
+	leftPressed = !leftPressed;
 
-	if (pressed) {
+	if (leftPressed) {
 		updateTextBox(textBox1, "Blue side is selected");
         styleTextBox(textBox1, lv_palette_main(LV_PALETTE_BLUE)); 
 		// redAlliance = false;
