@@ -8,10 +8,10 @@ inline const double gearRatio = 1;
 
 // Drivetrain
 inline pros::Controller controller(pros::E_CONTROLLER_MASTER);
-inline pros::MotorGroup frontLeftDrive({12, -15});
-inline pros::MotorGroup frontRightDrive({11, -14}); 
-inline pros::MotorGroup backLeftDrive({18, -20});
-inline pros::MotorGroup backRightDrive({17, -16});
+inline pros::MotorGroup frontLeftDrive({2, -1});
+inline pros::MotorGroup frontRightDrive({10, -9}); 
+inline pros::MotorGroup backLeftDrive({11, -12});
+inline pros::MotorGroup backRightDrive({20, -19});
 
 inline XDrivetrain drivetrain(&frontLeftDrive, &frontRightDrive, &backLeftDrive, &backRightDrive, wheelDiameter, trackWidth, gearRatio);
 
@@ -32,5 +32,5 @@ inline pros::adi::Pneumatics intakeLift('A', false);
 inline pros::MotorGroup elevator_mg({6, 7});
 
 // Wrist
-inline pros::Motor wristLeft(9);
-inline pros::Motor wristRight(10);
+inline pros::Motor wristLeft(15);
+inline pros::Motor wristRight(14);

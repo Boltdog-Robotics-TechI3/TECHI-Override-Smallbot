@@ -9,7 +9,6 @@ double wristRoll = 0, wristPitch = 0, leftSetpoint = 0, rightSetpoint = 0; // De
 
 PIDController wristPID(0.5, 0, 0); // Update PID values
 
-// pros::Task leverTask = pros::Task([]() {
 pros::Task wristStateMachine = pros::Task([]() {
     while(1) { 
         //If state can transition, move to transition state when ready. Case checks when ready
