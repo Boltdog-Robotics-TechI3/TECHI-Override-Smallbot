@@ -5,6 +5,8 @@ lv_obj_t* textBox2; // Text box for Button 2
 lv_obj_t* textBox3; // Text box for Button 3
 
 bool centerPressed, leftPressed;
+lv_obj_t* allianceLabel; // Text on the alliance button
+lv_obj_t* skillsLabel;   // Text on the skills button
 
 void initializeScreen() {
     // Get the screen's width and height
@@ -22,6 +24,8 @@ void initializeScreen() {
     lv_label_set_long_mode(textBox1, LV_LABEL_LONG_WRAP);
     lv_obj_set_style_text_align(textBox1, LV_TEXT_ALIGN_CENTER, 0);
     styleTextBox(textBox1, lv_palette_main(LV_PALETTE_RED)); 
+    lv_obj_set_style_text_font(textBox1, &lv_font_montserrat_20, 0); // Bigger text
+    lv_obj_set_style_pad_top(textBox1, 8, 0); // Center the text
 
     // Text Box 2
     textBox2 = lv_label_create(lv_screen_active());
@@ -31,15 +35,19 @@ void initializeScreen() {
     lv_label_set_long_mode(textBox2, LV_LABEL_LONG_WRAP);
     lv_obj_set_style_text_align(textBox2, LV_TEXT_ALIGN_CENTER, 0);
     styleTextBox(textBox2, lv_palette_main(LV_PALETTE_PURPLE)); // Green fill color
+    lv_obj_set_style_text_font(textBox2, &lv_font_montserrat_20, 0); // Bigger text
+    lv_obj_set_style_pad_top(textBox2, 8, 0); // Center the text
 
     // Text Box 3
     textBox3 = lv_label_create(lv_screen_active());
     lv_obj_set_size(textBox3, screenWidth, textBoxHeight);
     lv_obj_align(textBox3, LV_ALIGN_TOP_MID, 0, textBoxHeight * 2); // Align below Text Box 2
-    lv_label_set_text(textBox3, "0 - Alliance Mogo Red Auto");
+    lv_label_set_text(textBox3, "0 - Match Plus Side Keep Goal");
     lv_label_set_long_mode(textBox3, LV_LABEL_LONG_WRAP);
     lv_obj_set_style_text_align(textBox3, LV_TEXT_ALIGN_CENTER, 0);
     styleTextBox(textBox3, lv_palette_main(LV_PALETTE_BLUE_GREY)); // Green fill color
+    lv_obj_set_style_text_font(textBox3, &lv_font_montserrat_20, 0); // Bigger text
+    lv_obj_set_style_pad_top(textBox3, 8, 0); // Center the text
 
     // Create Button Container
     lv_obj_t* buttonContainer = lv_obj_create(lv_screen_active());
@@ -49,31 +57,39 @@ void initializeScreen() {
     lv_obj_set_layout(buttonContainer, LV_LAYOUT_FLEX);
     lv_obj_set_flex_flow(buttonContainer, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(buttonContainer, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_remove_flag(buttonContainer, LV_OBJ_FLAG_SCROLLABLE); // No scrollbar
 
     // **Step 3: Add Buttons**
     // Button 1
     lv_obj_t* btn1 = lv_button_create(buttonContainer);
-    lv_obj_set_size(btn1, screenWidth / 3, screenHeight / 6);
+    lv_obj_set_size(btn1, (screenWidth - 30) / 3, screenHeight / 3); // Bigger buttons
     lv_obj_t* btn1Label = lv_label_create(btn1);
-    lv_label_set_text(btn1Label, "Alliance Selector");
+    lv_label_set_text(btn1Label, "Alliance:\nRed Selected");
+    lv_obj_set_style_text_align(btn1Label, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_center(btn1Label);
+    allianceLabel = btn1Label;
     lv_obj_add_event_cb(btn1, [](lv_event_t* e) {
         onLeftButton();
     }, LV_EVENT_CLICKED, NULL);
 
     // Button 2
     lv_obj_t* btn2 = lv_button_create(buttonContainer);
-    lv_obj_set_size(btn2, screenWidth / 3, screenHeight / 6);
+    lv_obj_set_size(btn2, (screenWidth - 30) / 3, screenHeight / 3); // Bigger buttons
     lv_obj_t* btn2Label = lv_label_create(btn2);
-    lv_label_set_text(btn2Label, "Game Type");
+    lv_label_set_text(btn2Label, "Skills:\nOff");
+    lv_obj_set_style_text_align(btn2Label, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_center(btn2Label);
+    skillsLabel = btn2Label;
     lv_obj_add_event_cb(btn2, [](lv_event_t* e) {
         onCenterButton();
     }, LV_EVENT_CLICKED, NULL);
 
     // Button 3
     lv_obj_t* btn3 = lv_button_create(buttonContainer);
-    lv_obj_set_size(btn3, screenWidth / 3, screenHeight / 6);
+    lv_obj_set_size(btn3, (screenWidth - 30) / 3, screenHeight / 3); // Bigger buttons
     lv_obj_t* btn3Label = lv_label_create(btn3);
     lv_label_set_text(btn3Label, "Auto Selector");
+    lv_obj_center(btn3Label); // Center the text
     lv_obj_add_event_cb(btn3, [](lv_event_t* e) {
         onRightButton();
     }, LV_EVENT_CLICKED, NULL);
@@ -112,10 +128,12 @@ void onCenterButton() {
 	centerPressed = !centerPressed;
 	if (centerPressed) {
 		updateTextBox(textBox2, "Skills Run Selected");
+		updateTextBox(skillsLabel, "Skills:\nOn");
 		// skills = true;
 		// match = false;
 	} else {
 		updateTextBox(textBox2, "Match Selected");
+		updateTextBox(skillsLabel, "Skills:\nOff");
 		// skills = false;
 		// match = true;
 	}
@@ -132,34 +150,31 @@ void onCenterButton() {
  */
 void onRightButton() {
 	
-    autoSelection = ++autoSelection % 7;
+    autoSelection = (autoSelection + 1) % 6; // 6 autos (0-5)
 
 	switch (autoSelection) {
 		case 0: 
 			// Auto where we rush for the plus side goal, grab it, 
 			// then score rings on it and drop it off in the corner.
-			updateTextBox(textBox3, "0 -");
+			updateTextBox(textBox3, "0 - Match Plus Side Keep Goal");
 			break;
 		case 1: 
 			// Auto where we rush for the plus side goal, grab it, 
 			// then drop it off and go for the alliance side goal instead.
-			updateTextBox(textBox3, "1 - ");
+			updateTextBox(textBox3, "1 - Match Plus Side Drop Goal Auto");
 			break;
 		case 2: 
-			updateTextBox(textBox3, "2 - ");
+			updateTextBox(textBox3, "2 - Match Climb Goal Keep Goal Auto");
 			break;
 		case 3: 
-			updateTextBox(textBox3, "3 - ");
+			updateTextBox(textBox3, "3 - Match Climb Goal Drop Goal Auto");
 			break;
 		case 4: 
-			updateTextBox(textBox3, "4 - ");
+			updateTextBox(textBox3, "4 - Skills Auto");
 			break;
         case 5:
-            updateTextBox(textBox3, "5 - ");
+            updateTextBox(textBox3, "5 - Do Nothing");
             break;   
-        case 6:
- 			updateTextBox(textBox3, "6 - ");
-			break;           
 	}
 }
 
@@ -172,12 +187,14 @@ void onLeftButton() {
 
 	if (leftPressed) {
 		updateTextBox(textBox1, "Blue side is selected");
+		updateTextBox(allianceLabel, "Alliance:\nBlue Selected");
         styleTextBox(textBox1, lv_palette_main(LV_PALETTE_BLUE)); 
 		// redAlliance = false;
 		// blueAlliance = true;
 
 	} else {
 		updateTextBox(textBox1, "Red side is selected");
+		updateTextBox(allianceLabel, "Alliance:\nRed Selected");
         styleTextBox(textBox1, lv_palette_main(LV_PALETTE_RED)); 
 
 		// blueAlliance = false;
